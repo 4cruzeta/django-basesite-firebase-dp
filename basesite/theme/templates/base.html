@@ -1,0 +1,77 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basesite</title>
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-gray-800 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="/" class="font-bold">{% trans "HOME" %}</a>
+            </div>
+
+            <div class="flex items-center">
+                <!-- Simple language switcher: selects a language and redirects so the URL ends with /<lang>/ -->
+                <form id="lang-form" class="ml-4" onsubmit="return false;">
+                    {% get_available_languages as LANGUAGES %}
+                    <label for="lang-select" class="sr-only">{% trans "Language" %}</label>
+                    <select id="lang-select" name="language" class="rounded px-2 py-1 text-sm">
+                        {% for code, name in LANGUAGES %}
+                            <option value="{{ code }}" {% if code == LANGUAGE_CODE %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="lang-submit" type="button" class="ml-2 bg-gray-700 text-white px-3 py-1 rounded text-sm">{% trans "Go" %}</button>
+                </form>
+
+                <noscript>
+                    <!-- Minimal fallback for no-JS users: direct links to language-root. Adjust if you want to preserve the full path. -->
+                    <div class="ml-4">
+                        <a href="/en-us/" class="text-white px-2">EN-US</a>
+                        <a href="/pt-br/" class="text-white px-2">PT-BR</a>
+                    </div>
+                </noscript>
+            </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+
+    <script>
+        (function () {
+            const select = document.getElementById('lang-select');
+            const btn = document.getElementById('lang-submit');
+            if (!select || !btn) return;
+
+            function goToLang(lang) {
+                try {
+                    const url = new URL(window.location.href);
+                    const cleaned = url.pathname.replace(/^\/+|\/+$/g, '');
+                    const parts = cleaned ? cleaned.split('/') : [];
+                    const last = parts.length ? parts[parts.length - 1] : '';
+                    const candidate = (last || '').toLowerCase();
+                    if (candidate.match(/^[a-z]{2}(-[a-z]{2})?$/i)) {
+                        parts[parts.length - 1] = lang;
+                    } else {
+                        parts.push(lang);
+                    }
+                    url.pathname = '/' + parts.join('/') + '/';
+                    // preserve search and hash automatically
+                    window.location.href = url.toString();
+                } catch (err) {
+                    window.location.href = '/' + lang + '/';
+                }
+            }
+
+            btn.addEventListener('click', function () {
+                const lang = select.value;
+                if (lang) goToLang(lang);
+            });
+        })();
+    </script>
+
+</body>
+</html>
