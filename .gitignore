@@ -1,3 +1,9 @@
+#Firebase #
+.firebaserc
+firestore.rules
+firestore
+firestore.indexes.json
+
 # Django #
 *.log
 *.pot
@@ -137,3 +143,4 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+

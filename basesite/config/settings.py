@@ -23,12 +23,12 @@ load_dotenv(join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gbb+83+3vg7rqe@17350pew#2^a+tn4c2=uyf11o9r-*7_r0m2')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'J)vELHm!RY_RRQc^Qtbad}TNI@bPiQH*{MY{PnG8W(!#yFA@[#')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'edcat-container-635678063039.us-east1.run.app,edcat.com.br').split(',')
 
 
 # Application definition
@@ -63,6 +63,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://9002-firebase-base-site-dpl4-1761820816856.cluster-c72u3gwiofapkvxrcwjq5zllcu.cloudworkstations.dev',
+    'https://edcat-container-635678063039.us-east1.run.app',
+    'https://edcat.com.br',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -152,3 +159,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_HSTS_SECONDS = 3600
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
